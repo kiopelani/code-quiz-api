@@ -4,7 +4,7 @@
   "description": "An Express.js API for storing and tracking interview questions",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests"
+    "test": "NODE_ENV=test mocha tests"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/kiopelani/code-quiz-api",
   "dependencies": {
-    "express": "^4.12.2"
+    "express": "^4.12.2",
+    "hiredis": "^0.2.0",
+    "redis": "^0.12.1"
   },
   "devDependencies": {
     "mocha": "^2.2.1",

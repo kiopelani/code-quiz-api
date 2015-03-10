@@ -1,8 +1,12 @@
 var request = require('supertest');
 var app = require('./../app');
-
+var redis = require('redis');
+var client = redis.createClient();
+client.select('test'.length);
+client.flushdb();
 
 describe('Listing questions on questions path', function(){
+
   it('Returns a 200 status code', function(done){
     request(app)
       .get('/questions')
@@ -18,12 +22,13 @@ describe('Listing questions on questions path', function(){
   it('Returns all questions', function(done){
       request(app)
         .get('/questions')
-        .expect(/hoisting/i, done);
+        .expect([], done);
    });
 });
 
 
 describe('Creating new questions', function(){
+
   it('Returns a 201 status code', function(done){
     request(app)
       .post('/questions')
@@ -41,29 +46,39 @@ describe('Creating new questions', function(){
   it('Validates question title and content', function(done){
     request(app)
       .post('/questions')
-      .send('title=&content=&language')
+      .send('title=&content=&language=')
       .expect(400, done);
   });
 
 });
 
-describe('Shows question info', function(){
+describe('Returns question info', function(){
+  var mangoInfo = JSON.stringify({'title': 'mango', 'content': 'the best fruit ever', 'language': 'FRUIT'});
+  var mangoInfo2 = 'Yolo';
+
+  before(function(){
+    client.hset('questions', 'mango', mangoInfo);
+  });
+
+  after(function(){
+    client.flushdb();
+  });
 
   it('Returns 200 status code',function(done){
     request(app)
-      .get('/questions/1')
+      .get('/questions/mango')
       .expect(200, done);
   });
 
   it('Request returns JSON format',function(done){
     request(app)
-      .get('/questions/1')
+      .get('/questions/mango')
       .expect('Content-Type', /json/, done);
   });
 
-  it('Returns information for given question',function(done){
+  it('Gets information for given question',function(done){
     request(app)
-      .get('/questions/1')
-      .expect(/hoisting/, done);
+      .get('/questions/mango')
+      .expect(/fruit/, done);
   });
 });

@@ -3,24 +3,22 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var urlencode = bodyParser.urlencoded({ extended: false });
 
-var router = express.Router();
+//BEGIN REDIS CONNECTION
+var redis = require('redis');
+var client = redis.createClient();
 
-var questions = {
-  1: {
-    'title': 'What is hoisting?',
-    'content': 'Explain hoisting in JavaScript.',
-    'language': 'JAVASCRIPT'
-  },
-  2: {
-    'title': 'Ruby Blocks',
-    'content': 'What is a proc in Ruby and what is a block?',
-    'language': 'RUBY'
-  }
-}
+client.select((process.env.NODE_ENV || 'development').length);
+
+var router = express.Router();
+//END REDIS CONNECTION
 
 router.route('/')
+
   .get(function(request, response){
-    response.status(200).json(questions);
+    client.hkeys('questions', function(error, titles){
+      if(error) throw error;
+      response.json(titles);
+    });
   })
   .post(urlencode, function(request, response){
     var newQuestion = request.body;
@@ -28,13 +26,19 @@ router.route('/')
       response.sendStatus(400);
       return false;
     }
-    questions[questions.length] = {'title': newQuestion.title, 'content': newQuestion.content};
-    response.status(201).json(newQuestion.title);
+    var newQuestionInfo = JSON.stringify({'title': newQuestion.title, 'content': newQuestion.content});
+    client.hset('questions', newQuestion.title, newQuestionInfo, function(error){
+        if(error) throw error;
+        response.status(201).json(newQuestion.title);
+    });
   });
 
-router.route('/:id')
+router.route('/:title')
   .get(function(request, response){
-    response.status(200).json(questions[request.params.id]);
+    client.hget('questions', request.params.title, function(error, info){
+      var infoObj = JSON.parse(info);
+      response.status(200).json(infoObj);
+    });
   });
 
 module.exports = router;
