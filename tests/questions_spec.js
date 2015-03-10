@@ -36,7 +36,7 @@ describe('Creating new questions', function(){
       .expect(201, done);
   });
 
-  it('Returns the question title', function(done){
+  it('Returns the question id', function(done){
     request(app)
       .post('/questions')
       .send('title=Mango&content=the+best+fruit+ever&language=FRUIT')
@@ -54,10 +54,10 @@ describe('Creating new questions', function(){
 
 describe('Returns question info', function(){
   var mangoInfo = JSON.stringify({'title': 'mango', 'content': 'the best fruit ever', 'language': 'FRUIT'});
-  var mangoInfo2 = 'Yolo';
+  tempKey = Date.now()+'mango';
 
   before(function(){
-    client.hset('questions', 'mango', mangoInfo);
+    client.hset('questions', tempKey, mangoInfo);
   });
 
   after(function(){
@@ -66,19 +66,21 @@ describe('Returns question info', function(){
 
   it('Returns 200 status code',function(done){
     request(app)
-      .get('/questions/mango')
+      .get('/questions/'+tempKey)
       .expect(200, done);
   });
 
   it('Request returns JSON format',function(done){
     request(app)
-      .get('/questions/mango')
+      .get('/questions/'+tempKey)
       .expect('Content-Type', /json/, done);
   });
 
   it('Gets information for given question',function(done){
     request(app)
-      .get('/questions/mango')
+      .get('/questions/'+tempKey)
       .expect(/fruit/, done);
   });
 });
+
+//MOVE TITLE TO ID FOR ALL TESTS

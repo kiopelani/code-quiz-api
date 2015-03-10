@@ -27,15 +27,17 @@ router.route('/')
       return false;
     }
     var newQuestionInfo = JSON.stringify({'title': newQuestion.title, 'content': newQuestion.content});
-    client.hset('questions', newQuestion.title, newQuestionInfo, function(error){
+    var key = Date.now()+newQuestion.title;
+
+    client.hset('questions', key, newQuestionInfo, function(error){
         if(error) throw error;
-        response.status(201).json(newQuestion.title);
+        response.status(201).json(key);
     });
   });
 
-router.route('/:title')
+router.route('/:id')
   .get(function(request, response){
-    client.hget('questions', request.params.title, function(error, info){
+    client.hget('questions', request.params.id, function(error, info){
       var infoObj = JSON.parse(info);
       response.status(200).json(infoObj);
     });
