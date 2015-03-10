@@ -1,0 +1,22 @@
+{
+  "name": "code-quiz-api",
+  "version": "1.0.0",
+  "description": "An Express.js API for storing and tracking interview questions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kiopelani/code-quiz-api.git"
+  },
+  "author": "Kiope Gyzen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kiopelani/code-quiz-api/issues"
+  },
+  "homepage": "https://github.com/kiopelani/code-quiz-api",
+  "dependencies": {
+    "express": "^4.12.2"
+  }
+}
