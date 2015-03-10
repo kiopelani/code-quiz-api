@@ -13,7 +13,6 @@ var router = express.Router();
 //END REDIS CONNECTION
 
 router.route('/')
-
   .get(function(request, response){
     client.hkeys('questions', function(error, titles){
       if(error) throw error;
