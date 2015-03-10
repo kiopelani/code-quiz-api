@@ -41,6 +41,12 @@ router.route('/:id')
       var infoObj = JSON.parse(info);
       response.status(200).json(infoObj);
     });
+  })
+  .delete(function(request, response){
+    client.hdel('questions', request.params.id, function(error){
+      if(error) throw error;
+      response.sendStatus(204);
+    });
   });
 
 module.exports = router;

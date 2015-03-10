@@ -52,6 +52,25 @@ describe('Creating new questions', function(){
 
 });
 
+describe('Deleting questions', function(){
+  before(function(){
+    var mangoInfo = JSON.stringify({'title': 'mango', 'content': 'the best fruit ever', 'language': 'FRUIT'});
+    tempKey = Date.now()+'mango';
+    client.hset('questions', tempKey, mangoInfo);
+  });
+
+  after(function(){
+    client.flushdb();
+  });
+
+  it('Returns a 204 status code',function(done){
+    request(app)
+      .delete('/questions/'+tempKey)
+      .expect(204, done);
+  });
+});
+
+
 describe('Returns question info', function(){
   var mangoInfo = JSON.stringify({'title': 'mango', 'content': 'the best fruit ever', 'language': 'FRUIT'});
   tempKey = Date.now()+'mango';
