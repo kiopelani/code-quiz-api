@@ -32,4 +32,9 @@ router.route('/')
     response.status(201).json(newQuestion.title);
   });
 
+router.route('/:id')
+  .get(function(request, response){
+    response.status(200).json(questions[request.params.id]);
+  });
+
 module.exports = router;

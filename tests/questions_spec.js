@@ -46,3 +46,24 @@ describe('Creating new questions', function(){
   });
 
 });
+
+describe('Shows question info', function(){
+
+  it('Returns 200 status code',function(done){
+    request(app)
+      .get('/questions/1')
+      .expect(200, done);
+  });
+
+  it('Request returns JSON format',function(done){
+    request(app)
+      .get('/questions/1')
+      .expect('Content-Type', /json/, done);
+  });
+
+  it('Returns information for given question',function(done){
+    request(app)
+      .get('/questions/1')
+      .expect(/hoisting/, done);
+  });
+});
