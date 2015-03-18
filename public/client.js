@@ -14,7 +14,6 @@ $(function(){
       console.log("Error with post request");
     })
     .success(function(question){
-      //FIX tHIS -- not appending right
       $('.question-list').append('<li><a href="/api/v1/questions/'+question['id']+'">'+question['title']+'</a><a href="#" data-question="'+question['id']+'">X</a></li>');
       form.trigger('reset');
     });
