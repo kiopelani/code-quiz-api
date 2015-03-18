@@ -36,7 +36,8 @@ router.route('/')
       return false;
     }
     var key = Date.now()+(newQuestion.title.replace(/\W/g, ''));
-    var newQuestionInfo = JSON.stringify({'title': newQuestion.title, 'content': newQuestion.content, 'id': key});
+    var language = newQuestion.language.toLowerCase();
+    var newQuestionInfo = JSON.stringify({'title': newQuestion.title, 'content': newQuestion.content, 'language': language, 'id': key});
 
     client.hset('questions', key, newQuestionInfo, function(error){
         if(error) throw error;
