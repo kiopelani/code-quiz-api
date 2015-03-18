@@ -20,7 +20,7 @@ var router = express.Router();
 
 router.route('/')
   .get(function(request, response){
-    client.hkeys('questions', function(error, titles){
+    client.hgetall('questions', function(error, titles){
       if(error) throw error;
       response.json(titles);
     });
