@@ -20,9 +20,13 @@ var router = express.Router();
 
 router.route('/')
   .get(function(request, response){
-    client.hgetall('questions', function(error, titles){
+    client.hgetall('questions', function(error, questions){
       if(error) throw error;
-      response.json(titles);
+      var items = [];
+      for(i in questions){
+        items.push(JSON.parse(questions[i]));
+      }
+      response.json(items);
     });
   })
   .post(urlencode, function(request, response){
@@ -31,12 +35,15 @@ router.route('/')
       response.sendStatus(400);
       return false;
     }
-    var newQuestionInfo = JSON.stringify({'title': newQuestion.title, 'content': newQuestion.content});
     var key = Date.now()+(newQuestion.title.replace(/\W/g, ''));
+    var newQuestionInfo = JSON.stringify({'title': newQuestion.title, 'content': newQuestion.content, 'id': key});
 
     client.hset('questions', key, newQuestionInfo, function(error){
         if(error) throw error;
-        response.status(201).json(key);
+    });
+    client.hget('questions', key, function(error, info){
+        var infoObj = JSON.parse(info);
+        response.status(201).json(infoObj);
     });
   });
 

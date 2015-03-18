@@ -13,8 +13,9 @@ $(function(){
     .error(function(){
       console.log("Error with post request");
     })
-    .success(function(questionId){
-      appendToList([questionId]);
+    .success(function(question){
+      //FIX tHIS -- not appending right
+      $('.question-list').append('<li><a href="/api/v1/questions/'+question['id']+'">'+question['title']+'</a><a href="#" data-question="'+question['id']+'">X</a></li>');
       form.trigger('reset');
     });
   });
@@ -36,10 +37,10 @@ $(function(){
   function appendToList(questions){
     var list = [];
     var content, question;
-    for(var i in questions){
-      question = questions[i];
-      content = '<a href="/api/v1/questions/'+question+'">'+question+'</a>'+
-      ' <a href="#" data-question="'+question+'">X</a>';
+    for(var key in questions){
+      var question = questions[key];
+      content = '<a href="/api/v1/questions/'+question['id']+'">'+question['title']+'</a>'+
+      ' <a href="#" data-question="'+question['id']+'">X</a>';
       list.push($('<li>', {html: content}));
     }
     $('.question-list').append(list);
