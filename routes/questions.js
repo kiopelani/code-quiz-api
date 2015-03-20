@@ -31,12 +31,15 @@ router.route('/')
   })
   .post(urlencode, function(request, response){
     var newQuestion = request.body;
-    if(!newQuestion.title || !newQuestion.content){
+    if(!newQuestion['title'] || !newQuestion['content']){
       response.sendStatus(400);
       return false;
     }
     var key = Date.now()+(newQuestion.title.replace(/\W/g, ''));
-    var language = newQuestion.language.toLowerCase();
+    var language = null;
+    if(newQuestion.language){
+      language = newQuestion.language.toLowerCase();
+    }
     var newQuestionInfo = JSON.stringify({'title': newQuestion.title, 'content': newQuestion.content, 'language': language, 'id': key});
 
     client.hset('questions', key, newQuestionInfo, function(error){
