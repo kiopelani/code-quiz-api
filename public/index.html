@@ -8,6 +8,10 @@
     <h1>Code Quiz API Documentation</h1>
 
     <h4>All responses are in JSON</h4>
+    <p>Question Objects are formatted as follows:<p>
+    {'title': 'question title', 'content': 'question content', 'language': 'question language' 'id': 'question id' }
+  </p>
+    </p>
 
     <h3>Routes</h3>
 
@@ -15,7 +19,7 @@
 
     <ul>
         <li>GET '/questions' - returns all questions</li>
-        <li>POST '/questions' - creates a new question</li>
+        <li>POST '/questions' - creates a new question, 'title' and 'content' parameters required, 'language' optional.</li>
         <li>GET '/questions/:id' - returns info for question</li>
         <li>DELETE '/questions/:id' - deletes question</li>
 
