@@ -1,9 +1,10 @@
 # code-quiz-api
 An Express.js API for storing and tracking interview questions
 
-## Routes
 
-### Base URL: https://gyzen-code-quiz.herokuapp.com/api/v1
+### Documentation: https://gyzen-code-quiz.herokuapp.com
+
+#### Base URL: https://gyzen-code-quiz.herokuapp.com/api/v1
 
 
 * GET '/questions' - returns all questions
